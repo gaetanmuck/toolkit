@@ -10,6 +10,8 @@ class Eta:
         self.current_count = 0
         self.last_display_time = 0
         self.text = ''
+        self.str_len = 0
+        self.last_printed = ''
 
 
     def begin(self, length, text) -> None:
@@ -22,19 +24,25 @@ class Eta:
         now = datetime.datetime.now().timestamp()
         self.begin_time = now
 
-        print(self.text + ' - Elapsed: [00h00\'00] - ETA [??h??\'??] - ' + percent(0))
+        to_print = self.text + ' - Elapsed: [00h00\'00] - ETA [??h??\'??] - ' + percent(0)
+        end = ' ' * max(0, self.str_len - len(to_print)) + '\r'
+        print(to_print, end=end)
+        self.last_printed = to_print
+        self.str_len = len(to_print) if len(to_print) > self.str_len else self.str_len
+
         self.last_display_time = now
 
 
-    def iter(self, force_print=False) -> None:
+    def iter(self, count=0) -> None:
         """On an iteration."""
 
-        self.current_count += 1
+        if count != 0: self.current_count += count
+        else: self.current_count += 1
         now = datetime.datetime.now().timestamp()
 
         timeSinceLastDisplay = now - self.last_display_time
 
-        if (now - timeSinceLastDisplay < 1) and not force_print: return
+        if now - timeSinceLastDisplay < 1: return
 
         time_spent = now - self.begin_time
         percent_spent = self.current_count / self.length
@@ -58,7 +66,12 @@ class Eta:
         minutes_left = '{:0>2.0f}'.format(minutes_left)
         seconds_left = '{:0>2.0f}'.format(seconds_left)
 
-        print('\033[1A\033[K' + self.text + f' - Elapsed: [{hours_elapsed}h{minutes_elapsed}\'{seconds_elapsed}] - ETA [{hours_left}h{minutes_left}\'{seconds_left}] - ' + percent(percent_spent))
+        to_print = self.text + f' - Elapsed: [{hours_elapsed}h{minutes_elapsed}\'{seconds_elapsed}] - ETA [{hours_left}h{minutes_left}\'{seconds_left}] - ' + percent(percent_spent)
+        end = ' ' * max(0, self.str_len - len(to_print)) + '\r'
+        print(to_print, end=end)
+        self.last_printed = to_print
+        self.str_len = len(to_print) if len(to_print) > self.str_len else self.str_len
+
         self.last_display_time = now
 
 
@@ -78,12 +91,20 @@ class Eta:
         total_minutes = '{:0>2.0f}'.format(total_minutes)
         total_sec = '{:0>2.0f}'.format(total_sec)
 
-        print('\033[1A\033[K' + self.text + f' is done - Elapsed: [{total_hours}h{total_minutes}\'{total_sec}]')
+        to_print = self.text + f' is done - Elapsed: [{total_hours}h{total_minutes}\'{total_sec}]'
+        end = ' ' * max(0, self.str_len - len(to_print)) + '\r'
+        print(to_print, end=end)
+        self.last_printed = to_print
+        self.str_len = len(to_print) if len(to_print) > self.str_len else self.str_len
 
 
-    def log(self, string) -> None:
+
+    def print(self, string) -> None:
         """Print out a log, without messing with the ETA display."""
 
-        print(string)
-        self.iter(force_print=True)
+        end = ' ' * max(0, self.str_len - len(string)) + '\n'
+        print(string, end=end)
+        print(self.last_printed, end='\r')
+        self.str_len = len(self.last_printed) if len(self.last_printed) > self.str_len else self.str_len
+
 
