@@ -18,6 +18,9 @@ class TestMisc(unittest.TestCase):
         self.assertEqual(tk.now(), int(datetime.now().timestamp()))
 
 
-
+    def test_format_time(self):
+        self.assertEqual(tk.format_time(60), "[00h01'00]")
+        self.assertEqual(tk.format_time(3600), "[01h00'00]")
+        self.assertEqual(tk.format_time(59), "[00h00'59]")
 
 if __name__ == '__main__': unittest.main()

@@ -6,12 +6,13 @@ _db_connection = ''
 
 
 def db_connect(url):
-    """Connect and save connection to a PostgreSQL database."""
+    """Connect to a PostgreSQL database."""
     global _db_engine, _db_connection
 
+    print('>> Connecting to PGSQL Database ... ', end='')
     _db_engine = sqlalchemy.create_engine(url)
     _db_connection = _db_engine.connect()
-    print('Connected to database.')
+    print('Connected!')
 
 
 def db_execute(sql, read=True):
