@@ -8,6 +8,13 @@ def percent(nb):
     return the_string
 
 
+def convert_bytes(size):
+    """Convert bytes to KB, or MB or GB"""
+    for x in ['B', 'KB', 'MB', 'GB', 'TB']:
+        if size < 1000.0: return "%3.1f %s" % (size, x)
+        size /= 1000.0
+
+
 def now():
     """Get current timestamp in seconds (number)."""
     return  int(datetime.datetime.now().timestamp())
