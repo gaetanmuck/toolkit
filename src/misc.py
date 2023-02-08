@@ -1,4 +1,5 @@
 import datetime
+import threading
 
 
 def percent(nb):
@@ -34,3 +35,15 @@ def format_time(time):
     seconds = '{:0>2.0f}'.format(seconds)
 
     return f"[{hours}h{minutes}'{seconds}]"
+
+
+def set_interval(func, sec):
+    """Run the given function every given seconds."""
+    
+    def func_wrapper():
+        set_interval(func, sec) 
+        func()  
+
+    t = threading.Timer(sec, func_wrapper)
+    t.start()
+    return t
