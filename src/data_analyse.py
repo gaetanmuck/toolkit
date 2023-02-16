@@ -32,6 +32,7 @@ def na_analyze(df, verbose=True):
     nan_columns_filtered.sort(key=lambda x: x['na_nb'])
 
     for obj in nan_columns_filtered:
+        if obj['na_nb'] == 0: continue
         if verbose: print('Column <' + str(obj['col_name']) + '> misses ' + str(obj['na_nb']) + ' (' + percent(obj['na_percent']) + ') values')
 
 
@@ -59,7 +60,7 @@ def column_analyze(df, column_name, nb=20):
         print(percent(sumup[i]["count"] / len(df)) + f': "{sumup[i]["key"]}" ==> {sumup[i]["count"]}')
     
 
-def histogram(df, column_name, title='', max_number=20):
+def histogram(df, column_name, title='', max_number=20, width=None, height=None):
     """Print out an horizontal histogram of a DataFrame column."""
 
     temp_df = df.copy()
@@ -71,5 +72,5 @@ def histogram(df, column_name, title='', max_number=20):
     counts['Percent'] = round((counts['Count'] / total_nb) * 1000) / 10
     counts['Percent'] = counts['Percent'].astype(str) + ' %'
 
-    fig = px.bar(counts[-max_number:], x="Count", y=column_name, orientation='h', text="Percent", title=title)
+    fig = px.bar(counts[-max_number:], x="Count", y=column_name, orientation='h', text="Percent", title=title, width=width, height=height)
     fig.show()
