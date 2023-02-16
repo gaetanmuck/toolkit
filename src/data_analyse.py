@@ -6,11 +6,12 @@ import plotly.express as px
 
 from misc import percent
 
-def infos(df, nb=5): 
+def infos(df, nb=5, random=False): 
     """Get shape and extract of a dataframe."""
 
     print('Shape: ', df.shape)
-    display(df.sample(5))
+    if random: display(df.sample(nb))
+    else: display(df.head(nb))
 
 
 def na_analyze(df, verbose=True):

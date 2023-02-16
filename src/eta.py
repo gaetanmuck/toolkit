@@ -92,7 +92,7 @@ class Eta:
         total_sec = '{:0>2.0f}'.format(total_sec)
 
         to_print = self.text + f' is done - Elapsed: [{total_hours}h{total_minutes}\'{total_sec}]'
-        end = ' ' * max(0, self.str_len - len(to_print)) + '\r'
+        end = ' ' * max(0, self.str_len - len(to_print)) + '\n'
         print(to_print, end=end)
         self.last_printed = to_print
         self.str_len = len(to_print) if len(to_print) > self.str_len else self.str_len
