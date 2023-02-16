@@ -107,4 +107,3 @@ class Eta:
         print(self.last_printed, end='\r')
         self.str_len = len(self.last_printed) if len(self.last_printed) > self.str_len else self.str_len
 
-
