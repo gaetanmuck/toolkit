@@ -42,7 +42,7 @@ class Eta:
 
         timeSinceLastDisplay = now - self.last_display_time
 
-        if now - timeSinceLastDisplay < 1: return
+        if timeSinceLastDisplay < 1: return
 
         time_spent = now - self.begin_time
         percent_spent = self.current_count / self.length
