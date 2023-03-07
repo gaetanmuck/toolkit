@@ -36,7 +36,7 @@ class Eta:
     def iter(self, count=0) -> None:
         """On an iteration."""
 
-        if count != 0: self.current_count += count
+        if count != 0: self.current_count = count
         else: self.current_count += 1
         now = datetime.datetime.now().timestamp()
 
